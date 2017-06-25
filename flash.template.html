@@ -1,0 +1,92 @@
+
+<html>
+
+<head>
+  <title>Words</title>
+<style>
+
+a {
+  display:none;
+}
+span {
+  display:none;
+}
+.show {
+  display:block;
+}
+
+.spanish {
+color: #3beda9;
+}
+.english {
+color: white;
+}
+body {
+background: #bbb;
+}
+
+#words {
+height: 40vh;
+border-radius:50px;
+box-shadow:10px 15px 0px black;
+width:60%;
+margin: auto;
+margin-top: 30vh;
+box-sizing: border-box;
+padding-top: 114px;
+padding-left:50px;
+padding-right:50px;
+background: #999;
+font-size:60px;
+text-align:center;
+}
+
+</style>
+</head>
+
+<body>
+<div id='words'>
+%%%%%
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+
+var last_numbers = [];
+var number = 0;
+var spanish = false;
+var switched = true;
+var element;
+
+function show() {
+
+  if (element) element.css('display', 'none');
+  var prefix = (spanish ^ switched) ? "spanish" : "english";
+  element = $("#" + prefix + "_" + number);
+  element.css('display', 'block');
+  if (spanish) {
+    last_numbers.push(number);
+    number = Math.round(Math.random() * ($("#words").children().length / 2));
+  }
+  spanish = !spanish;
+}
+
+
+$(window).on('keydown', (function (e) {
+  if (e.keyCode === 0 || e.keyCode === 32) {
+    show(number);
+    console.log('Space pressed');
+  } else if (e.keyCode === 37) {
+    number = last_numbers.pop();
+    show(number)
+  } else if (e.keyCode === 13) {
+    switched = !switched;
+  } else if (e.keyCode === 191 && e.shiftKey) {
+    alert("Usage: Space to go to the next card. Left arrow key to go back. Enter to switch between spanish first or english first.")
+  }
+}))
+
+show(number)
+</script>
+</body>
+</html>
